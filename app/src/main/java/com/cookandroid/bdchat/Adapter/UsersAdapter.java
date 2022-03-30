@@ -14,6 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cookandroid.bdchat.ChatDetailActivity;
 import com.cookandroid.bdchat.Models.Users;
 import com.cookandroid.bdchat.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,6 +46,29 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder>{
         Users users = list.get(position);
         Picasso.get().load(users.getProfilePic()).placeholder(R.drawable.avatar3).into(holder.image);
         holder.userName.setText(users.getUserName());
+
+        //마지막 메시지 설정
+        FirebaseDatabase.getInstance().getReference().child("chats")
+                .child(FirebaseAuth.getInstance().getUid()+users.getUserId())
+                .orderByChild("timestamp").limitToLast(1)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.hasChildren()){
+                            for(DataSnapshot snapshot1 : snapshot.getChildren()){
+                                //마지막 메시지가 보이게 함
+                                //sample_show_user.xml 에서 lastmessage 부분에 뜸
+                                holder.lastMessage.setText(snapshot1.child("message").getValue().toString());
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

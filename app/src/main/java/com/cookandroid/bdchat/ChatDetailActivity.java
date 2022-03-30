@@ -70,6 +70,11 @@ public class ChatDetailActivity extends AppCompatActivity {
         final String senderRoom = senderId + recieveId; // senderId와 recieveId 순서로 합친 String으로 Firebase database의 senderRoom과 receiverRoom을 나눈다.
         final String receiverRoom = recieveId + senderId;
 
+
+
+
+
+
         database.getReference().child("chats").child(senderRoom) // 앞서 users처럼 "chat"에 senderRoom에 저장
                 .addValueEventListener(new ValueEventListener() { // 경로의 전체 내용에 대한 변경 사항을 읽고 수신 대기합니다.
 

@@ -101,7 +101,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         // 채팅창에 보낸 시간 or 날짜 뜨게 하기
         if(holder.getClass() == SenderViewHolder.class){
-            ((SenderViewHolder) holder).senderMsg.setText(messageModㅁㄴel.getMessage());
+            ((SenderViewHolder) holder).senderMsg.setText(messageModel.getMessage());
 
             Date date = new Date(messageModel.getTimestamp());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");

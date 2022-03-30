@@ -13,7 +13,8 @@ import android.widget.Toast;
 import com.cookandroid.bdchat.Adapter.FragmentsAdapter;
 import com.cookandroid.bdchat.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
-
+// 기본 각주 포멧
+// 날짜 comments
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
@@ -46,11 +47,15 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
             case R.id.settings:
-                Toast.makeText(this, "설정이 선택되었습니다.", Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(MainActivity.this,SettingsActivity.class);
+                startActivity(intent2);
+
                 break;
 
             case R.id.groupChat:
-                Toast.makeText(this, "실험이 선택되었습니다.", Toast.LENGTH_SHORT).show();
+                //group chat 기능으로 전환
+                Intent intent1 = new Intent(MainActivity.this,GroupChatActivity.class);
+                startActivity(intent1);
                 break;
 
             case R.id.logout:

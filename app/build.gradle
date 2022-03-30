@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    //id 'com.google.gms.google-services'
 }
 
 android {
@@ -45,7 +46,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0' //이미지 원형으로 만들기
-    implementation 'com.squareup.picasso:picasso:2.71828' // 이미지 수정
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.google.firebase:firebase-storage:20.0.1'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.8.1'// 이미지 수정
 
 
     testImplementation 'junit:junit:4.13.2'

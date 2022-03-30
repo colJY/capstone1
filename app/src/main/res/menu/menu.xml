@@ -4,7 +4,7 @@
         android:title="설정"/>
 
     <item android:id="@+id/groupChat"
-        android:title="실험"/>
+        android:title="그룹 채팅"/>
 
     <item android:id="@+id/logout"
         android:title="로그아웃"/>
