@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.cookandroid.bdchat.Fragments.BFragment;
 import com.cookandroid.bdchat.Fragments.ChatsFragment;
+import com.cookandroid.bdchat.Fragments.RequestsFragment;
 import com.cookandroid.bdchat.Fragments.StatusFragment;
 
 public class FragmentsAdapter extends FragmentPagerAdapter {
@@ -23,7 +23,7 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
         {
             case 0: return new ChatsFragment();
             case 1: return new StatusFragment();
-            case 2: return new BFragment();
+            case 2: return new RequestsFragment();
             default:return new ChatsFragment();
         }
     }
@@ -48,7 +48,7 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
         }
         if(position == 2)
         {
-            title ="B";
+            title ="Requests";
         }
         return title;
     }

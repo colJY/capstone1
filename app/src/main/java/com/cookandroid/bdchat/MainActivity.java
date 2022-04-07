@@ -64,6 +64,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this,SignInActivity.class);
                 startActivity(intent);
                 break;
+
+            case R.id.main_find_friends_option:
+                //group chat 기능으로 전환
+                Intent intent3 = new Intent(MainActivity.this,FindFriendActivity.class);
+                startActivity(intent3);
+                break;
         }
 
 

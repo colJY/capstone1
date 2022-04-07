@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -127,21 +126,21 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     .getReference().child("Users").child(recId);
 
             usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            Users users = snapshot.getValue(Users.class);
-                            Picasso.get()
-                                    .load(users.getProfilePic())
-                                    .placeholder(R.drawable.avatar)
-                                    .into(((RecieverViewHolder) holder).recieverImage);
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Users users = snapshot.getValue(Users.class);
+                    Picasso.get()
+                            .load(users.getProfilePic())
+                            .placeholder(R.drawable.avatar)
+                            .into(((RecieverViewHolder) holder).recieverImage);
 
-                        }
+                }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
+                }
+            });
             ((RecieverViewHolder) holder).recieverMsg.setText(messageModel.getMessage());
 
             Date date = new Date(messageModel.getTimestamp());
@@ -161,7 +160,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public class RecieverViewHolder extends RecyclerView.ViewHolder{
         TextView recieverMsg, recieverTime, recievername;
         public CircleImageView recieverImage;
-
         public RecieverViewHolder(@NonNull View itemView) {
             super(itemView);
             recieverImage = itemView.findViewById(R.id.image_message_profile);
@@ -174,7 +172,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
     // 보내는 이 뷰
     public class SenderViewHolder extends RecyclerView.ViewHolder{
         TextView senderMsg, senderTime;
-        public CircleImageView recieverImage;
         public SenderViewHolder(@NonNull View itemView){
             super(itemView);
 

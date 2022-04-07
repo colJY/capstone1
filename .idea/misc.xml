@@ -45,19 +45,26 @@
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/drawable/btn_bg.xml" value="0.1" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/drawable/ic_launcher_background.xml" value="0.124" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/drawable/linear_bg.xml" value="0.1" />
+        <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/activity_add_friend.xml" value="0.1" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/activity_chat_detail.xml" value="0.22760416666666666" />
+        <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/activity_find_friend.xml" value="0.17806484295845998" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/activity_group_chat.xml" value="0.22760416666666666" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/activity_main.xml" value="0.22760416666666666" />
+        <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/activity_profile.xml" value="0.15185185185185185" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/activity_settings.xml" value="0.22760416666666666" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/activity_sign_in.xml" value="0.11828774062816616" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/activity_sing_up.xml" value="0.15443840579710144" />
+        <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/app_bar_layout.xml" value="0.15185185185185185" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/border.xml" value="0.22760416666666666" />
+        <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/filteruser.xml" value="0.1" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/fragment_b.xml" value="0.10511651469098278" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/fragment_chats.xml" value="0.22760416666666666" />
+        <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/fragment_requests.xml" value="0.15185185185185185" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/fragment_status.xml" value="0.22760416666666666" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/sample_reciever.xml" value="0.5" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/sample_sender.xml" value="0.33" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/sample_show_user.xml" value="0.22760416666666666" />
+        <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/layout/users_display_layout.xml" value="0.33" />
         <entry key="..\:/CookAndroid/Project/capstone1/app/src/main/res/menu/menu.xml" value="0.22760416666666666" />
       </map>
     </option>

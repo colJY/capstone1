@@ -12,7 +12,18 @@
         <activity
             android:name=".SettingsActivity"
             android:exported="false" />
+
         <activity
+            android:name=".FindFriendActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+
+
+        <activity
+
             android:name=".GroupChatActivity"
             android:exported="false" />
         <activity

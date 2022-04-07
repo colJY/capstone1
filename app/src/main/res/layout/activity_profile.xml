@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/myung1"
+    tools:context=".ProfileActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/visit_profile_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="110dp"
+        android:src="@drawable/avatar"
+        />
+
+<!--    <TextView-->
+<!--        android:id="@+id/visit_user_name"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="user name"-->
+<!--        android:layout_below="@+id/visit_profile_image"-->
+<!--        android:layout_marginLeft="15dp"-->
+<!--        android:layout_marginRight="15dp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textSize="18sp"-->
+<!--        android:textStyle="bold"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/visit_user_name"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="User Name:"-->
+<!--        android:textColor="@color/lightGrey"-->
+<!--        android:layout_below="@+id/visit_profile_image"-->
+<!--        android:textSize="16sp"-->
+<!--        android:textStyle="bold"/>-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/visit_user_name"
+        android:hint="Lee"
+        android:padding="5dp"
+        android:inputType="textPersonName"
+        android:textColor="@color/black"
+        android:textColorHint="@color/grayBackground"
+        android:background="@drawable/border"
+        android:layout_toEndOf="@+id/visit_user_name"
+        android:layout_below="@+id/visit_profile_image"/>
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/find_requestButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="65dp"
+        android:layout_marginLeft="65dp"
+        android:background="@drawable/btn_bg"
+        android:padding="5dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="친구 추가"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@+id/visit_user_name"
+        />
+
+</RelativeLayout>
