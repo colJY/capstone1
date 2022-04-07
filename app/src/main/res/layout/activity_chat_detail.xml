@@ -9,13 +9,12 @@
     >
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="3dp"
-        android:layout_below="@+id/toolbar"
-        android:id="@+id/chatRecyclerView"
         android:layout_above="@+id/linear"
-        />
+        android:layout_below="@+id/toolbar"
+        android:layout_marginBottom="3dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -86,19 +85,20 @@
                 app:layout_constraintVertical_bias="0.476"
                 app:srcCompat="@drawable/leftarrowwhite" />
             <!--constrain ~~~ 는 시작부터 끝까지 끝나면 레이아웃을 다시 만든다.-->
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
                 android:padding="5dp"
                 android:src="@drawable/avatar3"
                 app:civ_border_color="#FFFFFF"
                 app:civ_border_width="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/backArrow"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/userName"

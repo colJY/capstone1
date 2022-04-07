@@ -6,25 +6,34 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cookandroid.bdchat.Models.MessageModel;
+import com.cookandroid.bdchat.Models.Users;
 import com.cookandroid.bdchat.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ChatAdapter extends RecyclerView.Adapter {
 
     ArrayList<MessageModel> messageModels;
     Context context;
-    String recId;
+    String recId, name;
 
 
     int SENDER_VIEW_TYPE = 1;
@@ -34,12 +43,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public ChatAdapter(ArrayList<MessageModel> messageModels, Context context) {
         this.messageModels = messageModels;
         this.context = context;
+        this.name = name;
     }
 
-    public ChatAdapter(ArrayList<MessageModel> messageModels, Context context, String recId) {
+    public ChatAdapter(ArrayList<MessageModel> messageModels, Context context,
+                       String recId, String name) {
         this.messageModels = messageModels;
         this.context = context;
         this.recId = recId;
+        this.name = name;
     }
 
     @NonNull
@@ -111,12 +123,32 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         }
         else{
+            DatabaseReference usersRef = FirebaseDatabase.getInstance()
+                    .getReference().child("Users").child(recId);
+
+            usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Users users = snapshot.getValue(Users.class);
+                            Picasso.get()
+                                    .load(users.getProfilePic())
+                                    .placeholder(R.drawable.avatar)
+                                    .into(((RecieverViewHolder) holder).recieverImage);
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
             ((RecieverViewHolder) holder).recieverMsg.setText(messageModel.getMessage());
 
             Date date = new Date(messageModel.getTimestamp());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
             String strDate = simpleDateFormat.format(date);
             ((RecieverViewHolder) holder).recieverTime.setText(strDate);
+            ((RecieverViewHolder) holder).recievername.setText(messageModel.getName());
         }
     }
     // 메시지 모델 사이즈
@@ -127,11 +159,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     // 받는 이 뷰
     public class RecieverViewHolder extends RecyclerView.ViewHolder{
-        TextView recieverMsg, recieverTime;
+        TextView recieverMsg, recieverTime, recievername;
+        public CircleImageView recieverImage;
 
         public RecieverViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            recieverImage = itemView.findViewById(R.id.image_message_profile);
+            recievername=itemView.findViewById(R.id.text_message_name);
             recieverMsg = itemView.findViewById(R.id.receiverText);
             recieverTime = itemView.findViewById(R.id.receiverTime);
 
@@ -140,6 +174,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     // 보내는 이 뷰
     public class SenderViewHolder extends RecyclerView.ViewHolder{
         TextView senderMsg, senderTime;
+        public CircleImageView recieverImage;
         public SenderViewHolder(@NonNull View itemView){
             super(itemView);
 

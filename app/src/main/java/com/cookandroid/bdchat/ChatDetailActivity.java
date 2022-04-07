@@ -6,13 +6,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.cookandroid.bdchat.Adapter.ChatAdapter;
 import com.cookandroid.bdchat.Models.MessageModel;
+import com.cookandroid.bdchat.Models.Users;
 import com.cookandroid.bdchat.databinding.ActivityChatDetailBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,13 +43,52 @@ public class ChatDetailActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
+        final String[] sendName = new String[1];
+        database.getReference().child("Users").child(auth.getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Users value = dataSnapshot.getValue(Users.class);
+                sendName[0] = value.getUserName();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w( "Failed to read value.", error.toException());
+            }
+        });
+
 
         final String senderId= auth.getUid();
         String recieveId = getIntent().getStringExtra("userId"); // userId, userName 받아오기
         String userName = getIntent().getStringExtra("userName");
         String profilePic = getIntent().getStringExtra("profilePic"); // 추후 프로필 사진 사용할때 사용할 예정
 
+
+
         binding.userName.setText(userName);
+        database.getReference().child("Users").child(recieveId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Users users = snapshot.getValue(Users.class);
+                        Picasso.get()
+                                .load(users.getProfilePic())
+                                .placeholder(R.drawable.avatar)
+                                .into(binding.profileImage);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
         // 보내는 버튼
         binding.backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +103,8 @@ public class ChatDetailActivity extends AppCompatActivity {
 
         // 메시지와 메시지 ui연결
         final ArrayList<MessageModel> messageModels = new ArrayList<>();
-        final ChatAdapter chatAdapter = new ChatAdapter(messageModels,this,recieveId);
+        final ChatAdapter chatAdapter = new ChatAdapter(messageModels,
+                this,recieveId,sendName[0]);
 
         binding.chatRecyclerView.setAdapter(chatAdapter);
 
@@ -102,6 +146,7 @@ public class ChatDetailActivity extends AppCompatActivity {
                 String message = binding.enterMessage.getText().toString();
                 final MessageModel model = new MessageModel(senderId,message);
                 model.setTimestamp(new Date().getTime());
+                model.setName(sendName[0]);
                 binding.enterMessage.setText("");
 
                 // real time DB에 User 밑에 chat에 생성 및 받는이 보낸이 채팅 연동
