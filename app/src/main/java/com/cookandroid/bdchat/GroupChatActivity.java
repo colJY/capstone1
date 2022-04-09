@@ -1,105 +1,208 @@
 package com.cookandroid.bdchat;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.Adapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cookandroid.bdchat.Adapter.ChatAdapter;
-import com.cookandroid.bdchat.Models.MessageModel;
-import com.cookandroid.bdchat.databinding.ActivityGroupChatBinding;
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.cookandroid.bdchat.Adapter.GroupAdapter;
+import com.cookandroid.bdchat.Models.GroupMessage;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
 
-//그룹 채팅 기능 추가 0329
+
 public class GroupChatActivity extends AppCompatActivity {
 
+    private Toolbar mToolbar;
+    private TextView username;
+    private ImageButton sendMessageButton;
+    private ImageView backArrowButton;
+    private EditText userMessageInput;
+//    private ScrollView mScrollView;
+    private ListView displayTextMessages;
+    private DatabaseReference userRef, groupNameRef, groupMessageKeyRef;
 
-    ActivityGroupChatBinding binding;
+    private FirebaseAuth mAuth;
+    private String currentGroupName, currentUserID, currentUserName, currentDate, currentTime;
+
+    //Test list view
+    ArrayList<GroupMessage> listItems;
+    private static GroupAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityGroupChatBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_group_chat);
 
-        getSupportActionBar().hide();
+        currentGroupName = getIntent().getExtras().get("groupName").toString();
+        Toast.makeText(this, currentGroupName, Toast.LENGTH_SHORT).show();
 
-        //뒤로가기 버튼 활성화
-        binding.backArrow.setOnClickListener(new View.OnClickListener(){
+        mAuth = FirebaseAuth.getInstance();
+        currentUserID = mAuth.getCurrentUser().getUid();
+        userRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        groupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName);
 
+
+        InitializeFields();
+        username.setText(currentGroupName);
+        GetUserInfo();
+        backArrowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(GroupChatActivity.this,MainActivity.class);
                 startActivity(intent);
             }
         });
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final ArrayList<MessageModel> messageModels = new ArrayList<>();
 
-        final String senderId = FirebaseAuth.getInstance().getUid(); // sender User Id 받아오기
-        binding.userName.setText("Group Chat"); // 채팅방 상단에 이름을 Group Chat이라고 설정 => 수정 필요
-
-        final ChatAdapter adapter = new ChatAdapter(messageModels,this);
-        binding.chatRecyclerView.setAdapter(adapter);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);// 수평,수직으로 배치시켜주는 레이아웃 매니저
-        binding.chatRecyclerView.setLayoutManager(layoutManager);
-
-        //메시지 내역 보이기
-        database.getReference().child("Group Chat")// 경로의 전체 내용에 대한 변경 사항을 읽고 수신 대기합니다.
-                .addValueEventListener(new ValueEventListener() {
+        sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                messageModels.clear();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    MessageModel model = dataSnapshot.getValue(MessageModel.class);
-                    messageModels.add(model);
+            public void onClick(View v) {
+                displayTextMessages.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+                SaveMessageInfoToDatabase();
+                userMessageInput.setText("");
+            }
+
+        });
+
+
+    }
+
+    @Override
+    protected  void onStart(){
+        super.onStart();
+        groupNameRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.exists()){
+                    DisplayMessages(dataSnapshot);
                 }
-                adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
-        });
 
-
-        //보내기 버튼 클릭시
-        binding.send.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                final String message = binding.enterMessage.getText().toString();
-                final MessageModel model = new MessageModel(senderId,message);
-                model.setTimestamp(new Date().getTime());
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                binding.enterMessage.setText("");// 메시지를 보낸 다음에 채팅 입력 창 초기화(비우기)
-                //DB의 Group Chat 아래 메시지 저장 => 추후 수정 필요
-                database.getReference().child("Group Chat").push().setValue(model)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(GroupChatActivity.this,"Message Send",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
+    }
+
+    private void DisplayMessages(DataSnapshot dataSnapshot) {
+        Iterator iterator = dataSnapshot.getChildren().iterator();
+        while(iterator.hasNext()){
+            String chatDate = (String)((DataSnapshot)iterator.next()).getValue();
+            String chatMessage = (String)((DataSnapshot)iterator.next()).getValue();
+            String chatName = (String)((DataSnapshot)iterator.next()).getValue();
+            String chatTime = (String)((DataSnapshot)iterator.next()).getValue();
+            if (currentUserName.equals(chatName)) {
+
+                listItems.add(new GroupMessage("","","","",chatMessage,chatDate,chatTime));
+            }
+            else {
+                listItems.add(new GroupMessage(chatName,chatMessage,chatDate,chatTime,"","",""));
+            }
+        }
+
+        adapter = new GroupAdapter(listItems,getApplicationContext());
+        displayTextMessages.setAdapter(adapter);
+        displayTextMessages.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+    }
 
 
+    private void SaveMessageInfoToDatabase() {
+        String message = userMessageInput.getText().toString();
+        String messageKey = groupNameRef.push().getKey();
+
+        if(TextUtils.isEmpty(message)){
+            Toast.makeText(this, "내용을 입력해주세요...", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Calendar calForDate = Calendar.getInstance();
+            SimpleDateFormat currentDateFormat = new SimpleDateFormat("MMM dd, yyyy");
+            currentDate = currentDateFormat.format(calForDate.getTime());
+
+            Calendar calForTime = Calendar.getInstance();
+            SimpleDateFormat currentTimeFormat = new SimpleDateFormat("hh:mm a");
+            currentTime = currentTimeFormat.format(calForTime.getTime());
+
+
+            HashMap<String, Object> groupMessageKey = new HashMap<>();
+
+            groupNameRef.updateChildren(groupMessageKey);
+            groupMessageKeyRef = groupNameRef.child(messageKey);
+
+            HashMap<String, Object> messageInfoMap = new HashMap<>();
+            messageInfoMap.put("name", currentUserName);
+            messageInfoMap.put("message", message);
+            messageInfoMap.put("date", currentDate);
+            messageInfoMap.put("time", currentTime);
+
+            groupMessageKeyRef.updateChildren(messageInfoMap);
+        }
+    }
+
+    private void GetUserInfo() {
+        userRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    currentUserName = dataSnapshot.child("userName").getValue().toString();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void InitializeFields() {
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(currentGroupName);
+        username = (TextView)findViewById(R.id.userName);
+        listItems = new ArrayList<GroupMessage>();
+        backArrowButton = (ImageView)findViewById(R.id.backArrow);
+        sendMessageButton = (ImageButton)findViewById(R.id.send);
+        userMessageInput = (EditText)findViewById(R.id.enterMessage);
+        displayTextMessages = (ListView) findViewById(R.id.group_chat_text_display);
+        displayTextMessages.setStackFromBottom(true);
     }
 }

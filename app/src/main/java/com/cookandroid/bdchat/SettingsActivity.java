@@ -3,6 +3,7 @@ package com.cookandroid.bdchat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -34,14 +35,17 @@ public class SettingsActivity extends AppCompatActivity {
     FirebaseDatabase database;
     FirebaseStorage storage;//firebase storage
 
+    private Toolbar mToolbar;
     // 처음 생성될 때,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
-        getSupportActionBar().hide();//툴바 제거
+        //getSupportActionBar().hide();//툴바 제거
 
         //Firebase 인스턴스들
         storage = FirebaseStorage.getInstance();

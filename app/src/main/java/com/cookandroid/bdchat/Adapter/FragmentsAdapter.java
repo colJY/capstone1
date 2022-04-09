@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.cookandroid.bdchat.Fragments.ChatsFragment;
+import com.cookandroid.bdchat.Fragments.GroupsFragment;
 import com.cookandroid.bdchat.Fragments.RequestsFragment;
 import com.cookandroid.bdchat.Fragments.StatusFragment;
 
@@ -22,7 +23,7 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
         switch (position)
         {
             case 0: return new ChatsFragment();
-            case 1: return new StatusFragment();
+            case 1: return new GroupsFragment();
             case 2: return new RequestsFragment();
             default:return new ChatsFragment();
         }
@@ -40,15 +41,15 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
         String title = null;
         if(position == 0)
         {
-            title ="CHATS";
+            title ="채팅";
         }
         if(position == 1)
         {
-            title ="STATUS";
+            title ="그룹";
         }
         if(position == 2)
         {
-            title ="Requests";
+            title ="친구 요청";
         }
         return title;
     }

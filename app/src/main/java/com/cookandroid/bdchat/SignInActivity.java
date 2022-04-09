@@ -2,6 +2,7 @@ package com.cookandroid.bdchat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -42,7 +43,7 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         mAuth = FirebaseAuth.getInstance(); // Firebase의 인증 Instance를 받아온다.
         firebaseDatabase = FirebaseDatabase.getInstance(); // firebse의 Database Instance를 가져온다

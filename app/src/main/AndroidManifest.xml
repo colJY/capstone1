@@ -18,14 +18,15 @@
             android:exported="false" />
 
         <activity
-            android:name=".ProfileActivity"
+            android:name=".GroupChatActivity"
             android:exported="false" />
 
 
         <activity
-
-            android:name=".GroupChatActivity"
+            android:name=".ProfileActivity"
             android:exported="false" />
+
+
         <activity
             android:name=".ChatDetailActivity"
             android:exported="false" />

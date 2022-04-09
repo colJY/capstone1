@@ -39,17 +39,19 @@ public class FindFriendActivity extends AppCompatActivity {
         findFriendsRecyclerList = (RecyclerView)findViewById(R.id.find_friends_recycler_list);
         findFriendsRecyclerList.setLayoutManager(new LinearLayoutManager(this));
 
-//        mToolbar = (Toolbar)findViewById(R.id.find_friends_toolbar);
-//        setSupportActionBar(mToolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setTitle("친구 찾기");
+        mToolbar = (Toolbar)findViewById(R.id.find_friends_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("친구 찾기");
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+
 
         FirebaseRecyclerOptions<Contacts> options = new
                 FirebaseRecyclerOptions.Builder<Contacts>()
