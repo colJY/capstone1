@@ -2,6 +2,7 @@ package com.cookandroid.bdchat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -27,6 +28,7 @@ public class SingUpActivity extends AppCompatActivity {
     FirebaseDatabase database;
     ProgressDialog progressDialog;
 
+    private Toolbar mToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +37,8 @@ public class SingUpActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-
-        getSupportActionBar().hide();
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
         // 계정 생성시 나오는 다이얼로그
         progressDialog = new ProgressDialog(SingUpActivity.this);
